@@ -4,13 +4,17 @@ import com.helpdesk.model.enums.Categoria;
 import com.helpdesk.model.enums.StatusChamado;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.AnyDiscriminatorImplicitValues;
 
 @Entity
 @Table(name = "chamados")
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class Chamado {
 
     @Id
