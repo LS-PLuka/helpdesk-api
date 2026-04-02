@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.AnyDiscriminatorImplicitValues;
 
 @Entity
 @Table(name = "chamados")
@@ -21,28 +20,32 @@ public class Chamado {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 255)
     private String titulo;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String descricao;
 
+    @Column(columnDefinition = "TEXT")
     private String solucao;
 
+    @Column(columnDefinition = "TEXT")
     private String observacao;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private Categoria categoria;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private StatusChamado status = StatusChamado.ABERTO;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String setor;
 
+    @Column(length = 150)
     private String colaborador;
 
+    @Column(length = 150)
     private String emailColaborador;
 }
