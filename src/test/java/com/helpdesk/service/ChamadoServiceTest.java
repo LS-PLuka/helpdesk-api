@@ -3,6 +3,7 @@ package com.helpdesk.service;
 import com.helpdesk.exceptions.ResourceNotFoundException;
 import com.helpdesk.model.dto.ChamadoRequest;
 import com.helpdesk.model.dto.ChamadoResponse;
+import com.helpdesk.model.dto.StatusRequest;
 import com.helpdesk.model.entity.Chamado;
 import com.helpdesk.model.enums.Categoria;
 import com.helpdesk.model.enums.StatusChamado;
@@ -128,6 +129,37 @@ class ChamadoServiceTest {
         assertEquals(dto.descricao(), resultado.descricao());
         assertEquals(dto.categoria(), resultado.categoria());
         assertEquals(dto.setor(), resultado.setor());
+    }
+
+    // ===== edit STATUS =====
+
+    @Test
+    @DisplayName("Deve atualizar status do chamado")
+    void atualizarStatus_deveAtualizarStatusDoChamado() {
+        // Arrange
+        Chamado chamado = chamadoValido();
+        StatusRequest dto = new StatusRequest(StatusChamado.RESOLVIDO);
+        when(repository.findById(1L)).thenReturn(Optional.of(chamado));
+        when(repository.save(any(Chamado.class))).thenReturn(chamado);
+
+        // Act
+        ChamadoResponse resultado = service.atualizarStatus(1L, dto);
+
+        // Assert
+        assertNotNull(resultado);
+        verify(repository, times(1)).save(any(Chamado.class));
+    }
+
+    @Test
+    @DisplayName("Deve lancar excecao ao atualizar status de chamado inexistente")
+    void atualizarStatus_deveLancarExcecaoQuandoIdNaoExistir() {
+        // Arrange
+        StatusRequest dto = new StatusRequest(StatusChamado.RESOLVIDO);
+        when(repository.findById(99L)).thenReturn(Optional.empty());
+
+        // Act & Assert
+        assertThrows(ResourceNotFoundException.class,
+                () -> service.atualizarStatus(99L, dto));
     }
 
     // ===== delete =====
