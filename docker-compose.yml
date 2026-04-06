@@ -1,0 +1,42 @@
+services:
+
+  db:
+    image: postgres:16
+    container_name: chamados-db
+    environment:
+      POSTGRES_DB: chamados
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d chamados"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    image: pedroluka/helpdesk-api
+    container_name: chamados-api
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/chamados
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin123
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    image: pedroluka/helpdesk-frontend
+    container_name: chamados-web
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres-data:
