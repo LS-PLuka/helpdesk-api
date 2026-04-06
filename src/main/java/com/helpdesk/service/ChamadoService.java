@@ -3,6 +3,7 @@ package com.helpdesk.service;
 import com.helpdesk.exceptions.ResourceNotFoundException;
 import com.helpdesk.model.dto.ChamadoRequest;
 import com.helpdesk.model.dto.ChamadoResponse;
+import com.helpdesk.model.dto.StatusRequest;
 import com.helpdesk.model.entity.Chamado;
 import com.helpdesk.model.enums.StatusChamado;
 import com.helpdesk.repository.ChamadoRepository;
@@ -37,6 +38,12 @@ public class ChamadoService {
         Chamado chamado = new Chamado();
         preencherDados(chamado, dto);
         chamado.setStatus(StatusChamado.ABERTO);
+        return ChamadoResponse.fromEntity(repository.save(chamado));
+    }
+
+    public ChamadoResponse atualizarStatus(Long id, StatusRequest dto) {
+        Chamado chamado = buscarOuLancarExcecao(id);
+        chamado.setStatus(dto.status());
         return ChamadoResponse.fromEntity(repository.save(chamado));
     }
 

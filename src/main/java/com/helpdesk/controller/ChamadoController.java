@@ -2,6 +2,7 @@ package com.helpdesk.controller;
 
 import com.helpdesk.model.dto.ChamadoRequest;
 import com.helpdesk.model.dto.ChamadoResponse;
+import com.helpdesk.model.dto.StatusRequest;
 import com.helpdesk.service.ChamadoService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +40,15 @@ public class ChamadoController {
         ChamadoResponse response = service.create(dto);
         URI uri = uriBuilder.path("/api/chamados/create/{id}").buildAndExpand(response.id()).toUri();
         return ResponseEntity.created(uri).body(response);
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<ChamadoResponse> atualizarStatus(
+            @PathVariable Long id,
+            @RequestBody @Valid StatusRequest dto) {
+
+        ChamadoResponse response = service.atualizarStatus(id, dto);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
