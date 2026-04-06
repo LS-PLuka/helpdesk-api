@@ -23,6 +23,7 @@ aplicando conceitos estudados em cursos da Alura:
 - **Padrão DTO** — entidades nunca expostas diretamente na API
 - **Testes unitários** — JUnit 5 + Mockito com padrão Triple A (Arrange, Act, Assert)
 - **Dependabot** — atualização automática de dependências
+- **Docker Compose** — orquestração completa com banco, backend e frontend
 
 ---
 
@@ -39,7 +40,7 @@ aplicando conceitos estudados em cursos da Alura:
 | Lombok | Redução de boilerplate |
 | Maven | Build e dependências |
 | JUnit 5 + Mockito | Testes unitários |
-| Docker | Container do banco de dados |
+| Docker / Docker Compose | Containerização e orquestração |
 | GitHub Actions | Pipeline de CI |
 | Dependabot | Atualização automática de dependências |
 
@@ -68,11 +69,44 @@ src/main/java/com/helpdesk/
 | GET | `/api/chamados/list` | Lista todos os chamados |
 | GET | `/api/chamados/get/{id}` | Busca chamado por ID |
 | POST | `/api/chamados` | Abre novo chamado |
+| PATCH | `/api/chamados/{id}/status` | Atualiza status do chamado |
 | DELETE | `/api/chamados/{id}` | Remove um chamado |
 
 ---
 
-## Como rodar
+## Docker Hub
+
+As imagens do projeto estão publicadas no Docker Hub:
+
+| Imagem | Link |
+|---|---|
+| Backend | [pedroluka/helpdesk-api](https://hub.docker.com/r/pedroluka/helpdesk-api) |
+| Frontend | [pedroluka/helpdesk-frontend](https://hub.docker.com/r/pedroluka/helpdesk-frontend) |
+
+---
+
+## Como rodar com Docker Compose
+
+A forma mais simples — sem precisar instalar Java, Maven ou configurar nada:
+```bash
+# Clone o repositório
+git clone https://github.com/LS-PLuka/helpdesk-api.git
+cd helpdesk-api
+
+# Sobe banco, backend e frontend de uma vez
+docker compose up
+```
+
+Acesse:
+- **Frontend:** `http://localhost:3000`
+- **Backend:** `http://localhost:8080`
+
+> Os dados do banco são persistidos em um volume Docker,
+> ou seja, não são perdidos ao derrubar os containers.
+
+---
+
+## Como rodar localmente (sem Docker)
 ```bash
 # Clone o repositório
 git clone https://github.com/LS-PLuka/helpdesk-api.git
