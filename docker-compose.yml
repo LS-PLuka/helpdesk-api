@@ -32,7 +32,7 @@ services:
 
   frontend:
     image: pedroluka/helpdesk-frontend
-    container_name: chamados-web
+    container_name: chamados-frontend
     ports:
       - "3000:80"
     depends_on:
